@@ -1,14 +1,13 @@
-export const metadata = {
-  title: 'ClipPost.io - AI Content Repurposer',
-  description: 'Transform any article into high-engagement Twitter threads and LinkedIn posts instantly.',
-}
-
-export default function RootLayout({ children }) {
+import type { AppProps } from 'next/app';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+ 
+function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <html lang="id">
-      <body className="bg-slate-950 text-slate-100 antialiased">
-        {children}
-      </body>
-    </html>
-  )
+    <>
+      <Component {...pageProps} />
+      <SpeedInsights />
+    </>
+  );
 }
+ 
+export default MyApp;
