@@ -1,13 +1,18 @@
-import type { AppProps } from 'next/app';
-import { SpeedInsights } from '@vercel/speed-insights/next';
- 
-function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <Component {...pageProps} />
-      <SpeedInsights />
-    </>
-  );
+{
+"name": "clippost",
+"version": "1.0.0",
+"private": true,
+"scripts": {
+"dev": "next dev",
+"build": "next build",
+"start": "next start",
+"lint": "next lint"
+},
+"dependencies": {
+"@vercel/speed-insights": "^1.2.0",
+"lucide-react": "^1.16.0",
+"react": "^19.0.0",
+"react-dom": "^19.0.0",
+"next": "15.1.0"
 }
- 
-export default MyApp;
+}
