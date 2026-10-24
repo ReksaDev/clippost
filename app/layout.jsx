@@ -1,18 +1,17 @@
-{
-"name": "clippost",
-"version": "1.0.0",
-"private": true,
-"scripts": {
-"dev": "next dev",
-"build": "next build",
-"start": "next start",
-"lint": "next lint"
-},
-"dependencies": {
-"@vercel/speed-insights": "^1.2.0",
-"lucide-react": "^1.16.0",
-"react": "^19.0.0",
-"react-dom": "^19.0.0",
-"next": "15.1.0"
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
+export const metadata = {
+  title: 'ClipPost.io - AI Content Repurposer',
+  description: 'Transform any article into high-engagement Twitter threads and LinkedIn posts instantly.',
 }
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="id">
+      <body className="bg-slate-950 text-slate-100 antialiased">
+        {children}
+        <SpeedInsights />
+      </body>
+    </html>
+  )
 }
