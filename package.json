@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint ."
+    "start": "next start"
   },
   "dependencies": {
     "@vercel/speed-insights": "^1.2.0",
@@ -15,5 +14,10 @@
     "react": "19.0.6",
     "react-dom": "19.0.6",
     "next": "15.5.18"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17",
+    "postcss": "^8.5.6",
+    "autoprefixer": "^10.4.21"
   }
 }
