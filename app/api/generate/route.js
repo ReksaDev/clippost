@@ -32,12 +32,10 @@ export async function POST(request) {
           messages: [
             {
   role: "system",
-  content: "You are an expert social media content writer. Use the source content without inventing facts. For Twitter or X, create a concise thread of 5 to 7 numbered posts. For LinkedIn, create one professional post with a strong opening, clear paragraphs, practical insights, and relevant hashtags. Never format LinkedIn as a numbered thread. Return only the generated content.",
+    content: "You are an expert social media content writer. Use the source content without inventing facts. For Twitter or X, create a concise thread of 5 to 7 numbered posts. For LinkedIn, create one professional post with a strong opening, clear paragraphs, practical insights, and relevant hashtags. Never format LinkedIn as a numbered thread. Return only the generated content.",
 },
-
-            },
-            {
-              role: "user",
+{
+  role: "user",
               content: `Platform: ${platform || "Twitter"}\n\nSource content:\n${content}`,
             },
           ],
