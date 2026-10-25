@@ -56,9 +56,53 @@ export async function POST(request) {
 
     const result = data.choices?.[0]?.message?.content || "";
 
+const twitterResult = result;
+
+const linkedinResponse = await fetch(
+  "https://api.groq.com/openai/v1/chat/completions",
+  {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "openai/gpt-oss-120b",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a professional LinkedIn content writer. Turn the source into one polished LinkedIn post with a compelling opening, clear paragraphs, practical insights, and relevant hashtags. Do not format it as a numbered thread. Do not invent facts. Return only the LinkedIn post.",
+        },
+        {
+          role: "user",
+          content: `Source content:\n${content}`,
+        },
+      ],
+      temperature: 0.7,
+    }),
+  }
+);
+
+const linkedinData = await linkedinResponse.json();
+
+if (!linkedinResponse.ok) {
+  return Response.json(
+    {
+      error:
+        linkedinData.error?.message ||
+        "AI gagal membuat konten LinkedIn.",
+    },
+    { status: linkedinResponse.status }
+  );
+}
+
+const linkedinResult =
+  linkedinData.choices?.[0]?.message?.content || "";
+
 return Response.json({
-  twitter: result,
-  linkedin: result,
+  twitter: twitterResult,
+  linkedin: linkedinResult,
 });
   } catch {
     return Response.json(
