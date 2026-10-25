@@ -382,13 +382,18 @@ export default function App() {
 
                 </div>
 
-                <div className="whitespace-pre-wrap break-words rounded-xl bg-slate-950 p-4 text-sm leading-7 text-slate-300">
+                
+  function shareToX(text) {
+    const url = `https://x.com/intent/post?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
 
-                  {result[item.key]}
+  function shareToLinkedIn(text) {
+    const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.origin)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+    copyText(text, 'linkedin-share');
+  }
 
-                </div>
-
-              </article>
 
             ))}
 
