@@ -54,9 +54,12 @@ export async function POST(request) {
       );
     }
 
-    return Response.json({
-      result: data.choices?.[0]?.message?.content || "",
-    });
+    const result = data.choices?.[0]?.message?.content || "";
+
+return Response.json({
+  twitter: result,
+  linkedin: result,
+});
   } catch {
     return Response.json(
       { error: "Terjadi kesalahan saat memproses konten." },
