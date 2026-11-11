@@ -1,308 +1,38 @@
+const services = [
+  { title: "Business Strategy", text: "Turn complex decisions into a focused plan, clear priorities, and measurable next steps." },
+  { title: "Digital Transformation", text: "Identify practical technology opportunities and improve the way your business works." },
+  { title: "Growth & Operations", text: "Build stronger customer journeys, efficient processes, and a foundation for sustainable growth." },
+];
 
-'use client';
-
-import React, { useState } from 'react';
-import {
-  Sparkles,
-  Copy,
-  Check,
-  ShieldCheck,
-  Zap,
-  Crown,
-  LoaderCircle,
-  X,
-  ExternalLink,
-} from 'lucide-react';
-
-export default function App() {
-  const [inputText, setInputText] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState('');
-  const [copied, setCopied] = useState('');
-  const [showPaywall, setShowPaywall] = useState(false);
-  const [generationsLeft, setGenerationsLeft] = useState(3);
-
-  async function copyText(text, type) {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(type);
-      setTimeout(() => setCopied(''), 2000);
-    } catch {
-      setError('Gagal menyalin. Silakan salin teks secara manual.');
-    }
-  }
-
-  async function handleGenerate() {
-    if (!inputText.trim() || loading) return;
-
-    if (generationsLeft <= 0) {
-      setShowPaywall(true);
-      return;
-    }
-
-    setLoading(true);
-    setResult(null);
-    setError('');
-
-    try {
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          content: inputText,
-          platform: 'Twitter',
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          'Layanan AI gagal. Periksa endpoint /api/generate.'
-        );
-      }
-
-      const data = await response.json();
-
-      if (!data.twitter || !data.linkedin) {
-        throw new Error('Respons AI tidak lengkap.');
-      }
-
-      setResult(data);
-      setGenerationsLeft((count) => count - 1);
-    } catch (err) {
-      setError(
-        err.message || 'Terjadi kesalahan. Silakan coba lagi.'
-      );
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  function shareToX(text) {
-    const url = `https://x.com/intent/post?text=${encodeURIComponent(text)}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
-  }
-
-  async function shareToLinkedIn(text) {
-    await copyText(text, 'linkedin-share');
-
-    const url =
-      'https://www.linkedin.com/sharing/share-offsite/?url=' +
-      encodeURIComponent(window.location.origin);
-
-    window.open(url, '_blank', 'noopener,noreferrer');
-  }
-
+export default function Home() {
   return (
-    <div className="min-h-screen bg-slate-950 font-sans text-slate-100">
-      <nav className="sticky top-0 z-40 border-b border-slate-800 bg-slate-900/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
-          <div className="flex items-center gap-2">
-            <div className="rounded-xl bg-indigo-600 p-2">
-              <Zap size={20} />
-            </div>
-            <span className="text-xl font-black tracking-tight">
-              ClipPost<span className="text-indigo-400">.io</span>
-            </span>
-          </div>
-
-          <button
-            onClick={() => setShowPaywall(true)}
-            className="flex items-center gap-2 rounded-xl bg-amber-500 px-3 py-2 text-sm font-bold text-slate-950 hover:bg-amber-400"
-          >
-            <Crown size={16} />
-            Upgrade
-          </button>
-        </div>
-      </nav>
-
-      <main className="mx-auto max-w-4xl space-y-8 px-4 py-10 sm:px-6 sm:py-14">
-        <header className="space-y-4 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-2 text-xs font-semibold text-indigo-300">
-            <Sparkles size={14} />
-            AI Content Repurposing
-          </div>
-
-          <h1 className="text-4xl font-black leading-tight sm:text-6xl">
-            Satu Teks,
-            <span className="block bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Banyak Konten
-            </span>
-          </h1>
-
-          <p className="mx-auto max-w-2xl text-sm leading-7 text-slate-400 sm:text-lg">
-            Ubah artikel, catatan, atau transkrip menjadi
-            Twitter/X thread dan postingan LinkedIn dengan lebih cepat.
-          </p>
+    <main>
+      <div className="wrap">
+        <nav className="nav">
+          <a className="brand" href="#">GLOBAL<span>CONSULT</span></a>
+          <div className="links"><a href="#services">Services</a><a href="#approach">Our approach</a><a href="#contact">Contact</a></div>
+          <a className="btn" href="#contact">Start a conversation</a>
+        </nav>
+        <header className="hero">
+          <div className="eyebrow">Independent consulting · Worldwide</div>
+          <h1>Clarity for your next move.</h1>
+          <p>We help ambitious founders and businesses make confident decisions, solve meaningful challenges, and turn ideas into practical progress.</p>
+          <div className="actions"><a className="btn" href="#contact">Discuss your goals ↗</a><a className="ghost" href="#services">Explore our services</a></div>
         </header>
-
-        <section className="space-y-5 rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-2xl sm:p-8">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <label
-              htmlFor="source-text"
-              className="text-sm font-semibold text-slate-200"
-            >
-              Masukkan teks kamu
-            </label>
-
-            <span className="text-xs text-indigo-300">
-              Sisa kuota demo: {generationsLeft}
-            </span>
-          </div>
-
-          <textarea
-            id="source-text"
-            rows={7}
-            value={inputText}
-            onChange={(event) => setInputText(event.target.value)}
-            placeholder="Tempel artikel, ide, catatan, atau transkrip di sini..."
-            className="w-full resize-y rounded-xl border border-slate-700 bg-slate-950 p-4 text-sm leading-6 text-white outline-none transition placeholder:text-slate-600 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30"
-          />
-
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-2 text-xs text-slate-400">
-              <ShieldCheck size={17} className="text-emerald-400" />
-              Siap untuk berbagai platform
-            </div>
-
-            <button
-              onClick={handleGenerate}
-              disabled={loading || !inputText.trim()}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3 font-bold transition hover:from-indigo-500 hover:to-violet-500 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
-            >
-              {loading ? (
-                <>
-                  <LoaderCircle size={18} className="animate-spin" />
-                  Memproses...
-                </>
-              ) : (
-                <>
-                  <Sparkles size={18} />
-                  Generate Konten
-                </>
-              )}
-            </button>
-          </div>
-
-          {error && (
-            <div
-              role="alert"
-              className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm leading-6 text-red-300"
-            >
-              {error}
-            </div>
-          )}
-        </section>
-
-        {result && (
-          <section className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            {[
-              {
-                key: 'twitter',
-                title: 'Twitter / X Thread',
-                color: 'bg-sky-400',
-              },
-              {
-                key: 'linkedin',
-                title: 'LinkedIn Post',
-                color: 'bg-blue-500',
-              },
-            ].map((item) => (
-              <article
-                key={item.key}
-                className="flex min-w-0 flex-col rounded-2xl border border-slate-800 bg-slate-900 p-5"
-              >
-                <div className="mb-4 flex items-center justify-between gap-2 border-b border-slate-800 pb-4">
-                  <div className="flex items-center gap-2">
-                    <span className={`h-3 w-3 rounded-full ${item.color}`} />
-                    <h2 className="font-bold">{item.title}</h2>
-                  </div>
-
-                  <button
-                    onClick={() => copyText(result[item.key], item.key)}
-                    className="flex items-center gap-2 rounded-lg bg-slate-800 px-3 py-2 text-xs hover:bg-slate-700"
-                  >
-                    {copied === item.key ? (
-                      <Check size={14} className="text-emerald-400" />
-                    ) : (
-                      <Copy size={14} />
-                    )}
-                    {copied === item.key ? 'Disalin!' : 'Salin'}
-                  </button>
-                </div>
-
-                <div className="min-w-0 flex-1 whitespace-pre-wrap break-words rounded-xl bg-slate-950 p-4 text-sm leading-7 text-slate-300">
-                  {result[item.key]}
-                </div>
-
-                {item.key === 'twitter' ? (
-                  <button
-                    onClick={() => shareToX(result.twitter)}
-                    className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-sky-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-sky-500"
-                  >
-                    <ExternalLink size={16} />
-                    Bagikan ke X
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => shareToLinkedIn(result.linkedin)}
-                    className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-blue-500"
-                  >
-                    <ExternalLink size={16} />
-                    Bagikan ke LinkedIn
-                  </button>
-                )}
-              </article>
-            ))}
-          </section>
-        )}
-      </main>
-
-      <footer className="mt-16 border-t border-slate-900 px-4 py-8 text-center text-xs text-slate-500">
-        © 2026 ClipPost.io · AI Content Assistant
-      </footer>
-
-      {showPaywall && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
-          onClick={() => setShowPaywall(false)}
-        >
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="upgrade-title"
-            className="w-full max-w-md space-y-4 rounded-2xl border border-slate-700 bg-slate-900 p-6"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="flex items-center justify-between">
-              <h2 id="upgrade-title" className="text-xl font-black">
-                ClipPost Pro
-              </h2>
-
-              <button
-                onClick={() => setShowPaywall(false)}
-                aria-label="Tutup"
-                className="rounded-lg p-2 hover:bg-slate-800"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <p className="text-sm leading-6 text-slate-400">
-              Fitur upgrade dan pembayaran belum dikonfigurasi.
-              Jangan melakukan pembayaran sebelum gateway resmi
-              terhubung.
-            </p>
-
-            <button
-              onClick={() => setShowPaywall(false)}
-              className="w-full rounded-xl bg-indigo-600 py-3 font-semibold hover:bg-indigo-500"
-            >
-              Mengerti
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+      </div>
+      <section className="section" id="services"><div className="wrap">
+        <div className="eyebrow">What we do</div><h2>Practical advice. Meaningful impact.</h2>
+        <p className="lead">Focused support for the decisions that move your business forward. Engagements are shaped around your goals, stage, and operating reality.</p>
+        <div className="grid">{services.map((s)=><article className="card" key={s.title}><h3>{s.title}</h3><p>{s.text}</p></article>)}</div>
+      </div></section>
+      <section className="section" id="approach"><div className="wrap">
+        <div className="eyebrow">Our approach</div><h2>Clear steps, from challenge to action.</h2>
+        <div className="steps"><div className="step"><b>01 / DISCOVER</b><h3>Understand the challenge</h3><p>We listen, ask the right questions, and define what success should look like.</p></div><div className="step"><b>02 / DESIGN</b><h3>Build a focused plan</h3><p>We identify options, priorities, and a practical roadmap based on your needs.</p></div><div className="step"><b>03 / DELIVER</b><h3>Move forward with confidence</h3><p>We help turn recommendations into clear actions and measurable outcomes.</p></div></div>
+      </div></section>
+      <section className="section" id="contact"><div className="wrap">
+        <div className="contact"><div><div className="eyebrow">Start a conversation</div><h2>What would you like to make possible?</h2><p className="lead">Tell us where you are and what you are working toward. We’ll take it from there.</p></div><a className="btn" href="mailto:hello@globalconsult.com?subject=Consultation%20enquiry">Email Global Consult ↗</a></div>
+      </div></section>
+      <footer className="footer"><div className="wrap">© {new Date().getFullYear()} Global Consult. All rights reserved.</div></footer>
+    </main>
   );
 }
