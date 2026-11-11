@@ -1,3 +1,5 @@
+import ContactForm from "./contact-form";
+
 const services = [
   { title: "Business Strategy", text: "Turn complex decisions into a focused plan, clear priorities, and measurable next steps." },
   { title: "Digital Transformation", text: "Identify practical technology opportunities and improve the way your business works." },
@@ -30,7 +32,10 @@ export default function Home() {
         <div className="steps"><div className="step"><b>01 / DISCOVER</b><h3>Understand the challenge</h3><p>We listen, ask the right questions, and define what success should look like.</p></div><div className="step"><b>02 / DESIGN</b><h3>Build a focused plan</h3><p>We identify options, priorities, and a practical roadmap based on your needs.</p></div><div className="step"><b>03 / DELIVER</b><h3>Move forward with confidence</h3><p>We help turn recommendations into clear actions and measurable outcomes.</p></div></div>
       </div></section>
       <section className="section" id="contact"><div className="wrap">
-        <div className="contact"><div><div className="eyebrow">Start a conversation</div><h2>What would you like to make possible?</h2><p className="lead">Tell us where you are and what you are working toward. We’ll take it from there.</p></div><a className="btn" href="mailto:hello@globalconsult.com?subject=Consultation%20enquiry">Email Global Consult ↗</a></div>
+        <div className="eyebrow">Start a conversation</div>
+        <h2>Tell us what you want to achieve.</h2>
+        <p className="lead">Share a few details about your goals. We’ll prepare an enquiry email for you to review and send.</p>
+        <ContactForm />
       </div></section>
       <footer className="footer"><div className="wrap">© {new Date().getFullYear()} Global Consult. All rights reserved.</div></footer>
     </main>
